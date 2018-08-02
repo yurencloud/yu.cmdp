@@ -6,12 +6,6 @@ const URL = pkg.cmdpserver;
 const SUCCESS = "0000";
 
 function Create(cmd, comment) {
-    //post URL+"/cmdp/create"  Cmd="+cmd+"&Comment="+comment
-    //req.Header.Set("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
-    //token, _ := ReadToken()//从文件取出数据
-    //req.Header.Set("Authorization", "Bearer "+string(token))
-    // 返回 {Status，Message, Data}
-
     const options = {
         method: 'POST',
         uri: URL+"/cmdp/create",
@@ -64,29 +58,50 @@ function Search(keyword) {
 }
 
 function Delete(id) {
-    // req, err := http.NewRequest("GET", URL+"/cmdp/delete/"+strconv.Itoa(id), nil)
-    const res = {
-        Status: "0000",
-        Message: "success",
-    }
-    if (res.Status === SUCCESS) {
-        console.log(res.Message.green);
-    } else {
-        console.log(res.Message.red);
-    }
+    const options = {
+        uri: URL+"/cmdp/delete/"+id,
+        headers: {
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NTkyODMxNzAsInVzZXJJZCI6MSwidXNlcm5hbWUiOiJtYWNrd2FuZyJ9.X0GzL7aPLNHojacnE5hYRyxlFw_pOTc9EutVX5YyflQ'
+        },
+        json: true
+    };
+
+    rp(options)
+        .then(function (rep) {
+            if (rep.Status === SUCCESS) {
+                console.log(rep.Message.green);
+            } else {
+                console.log(rep.Message.red);
+            }
+        })
+        .catch(function (err) {
+            console.log(err.red);
+        });
 }
 
 function Register(username, password) {
     // req, err := http.NewRequest("POST", URL+"/user/register", strings.NewReader("Username="+username+"&Password="+password))
-    const res = {
-        Status: "0000",
-        Message: "success",
-    }
-    if (res.Status === SUCCESS) {
-        console.log(res.Message.green);
-    } else {
-        console.log(res.Message.red);
-    }
+    const options = {
+        method: 'POST',
+        uri: URL+"/cmdp/register",
+        headers: {
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NTkyODMxNzAsInVzZXJJZCI6MSwidXNlcm5hbWUiOiJtYWNrd2FuZyJ9.X0GzL7aPLNHojacnE5hYRyxlFw_pOTc9EutVX5YyflQ'
+        },
+        body: {cmd, comment},
+        json: true
+    };
+
+    rp(options)
+        .then(function (rep) {
+            if (rep.Status === SUCCESS) {
+                console.log(rep.Message.green);
+            } else {
+                console.log(rep.Message.red);
+            }
+        })
+        .catch(function (err) {
+            console.log(err.red);
+        });
 }
 
 function Login(username, password) {
